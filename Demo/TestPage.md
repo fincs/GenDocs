@@ -33,7 +33,7 @@ Some math: `2\**3 + 5\*4`
 
 ### For more information
 
-Go to [Google](http://www.google.com/search?q=AutoHotkey&encoding=UTF-8) or
+Go to [Google \[although it may not be a good idea\]](http://www.google.com/search?q=AutoHotkey&encoding=UTF-8) or
 to the [forums](http://www.autohotkey.com/forum/).
 
 There's a line break  

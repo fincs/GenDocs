@@ -136,11 +136,12 @@ _MD(ByRef v)
 	t := RegExReplace(t, "P)\*\*(.+?)\*\*(?C1)", "<strong>$1</strong>")
 	t := RegExReplace(t, "P)\*(.+?)\*(?C2)", "<em>$1</em>")
 	t := RegExReplace(t, "P)``(.+?)``(?C3)", "<code>$1</code>")
-	t := RegExReplace(t, "P)!\[(.*?)\]\((.+?)\)(?C10)", "<img src=""$2"" alt=""$1""/>")
-	t := RegExReplace(t, "P)\[(.+?)\]\((.+?)\)(?C11)", "<a href=""$2"">$1</a>")
+	t := RegExReplace(t, "P)!\[(.*?)\](?C4)\((.+?)\)", "<img src=""$2"" alt=""$1""/>")
+	t := RegExReplace(t, "P)\[(.+?)\](?C5)\((.+?)\)", "<a href=""$2"">$1</a>")
 	StringReplace, t, t, \*, *, All
 	StringReplace, t, t, \``, ``, All
 	StringReplace, t, t, \[, [, All
+	StringReplace, t, t, \], ], All
 	StringReplace, t, t, \!, !, All
 	StringReplace, t, t, \\, \, All
 	return t
@@ -179,8 +180,8 @@ _MD_Callout(m, cId, foundPos, haystack)
 	; cId = 1  -> **text**
 	; cId = 2  -> *text*
 	; cId = 3  -> `text`
-	; cId = 10 -> ![img alt text](img url)
-	; cId = 11 -> [link text](link url)
+	; cId = 4  -> ![img alt text](img url)
+	; cId = 5  -> [link text](link url)
 	
 	p := foundPos, e := 0
 	while SubStr(haystack, --p, 1) = "\"
@@ -189,17 +190,14 @@ _MD_Callout(m, cId, foundPos, haystack)
 		return 1
 	p := foundPos + m - 1, e := 0
 	
-	if cId < 10
-	{
-		if cId = 1
-			p --
-		while SubStr(haystack, --p, 1) = "\"
-			e ++
-		if e & 1
-			return 1
-	}
+	if cId = 1
+		p --
+	while SubStr(haystack, --p, 1) = "\"
+		e ++
+	if e & 1
+		return 1
 	
-	if cId = 10
+	if cId = 4
 	{
 		global imglist
 		imglist._Insert(SubStr(haystack, mPos2, mLen2))

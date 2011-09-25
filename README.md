@@ -35,7 +35,7 @@ GenDocs uses a stripped down version of Markdown, which supports:
 - **Inline code marks**: \`...\`. Equivalent to HTML `<code>...</code>`.
 - **Code sections**: *unlike standard Markdown*, they use the blockquote syntax: blocks of text whose lines start with > followed by a space.
 - **Unordered lists**: lines that start with \*. Equivalent to HTML `<ul>...<li>...</li>...</ul>`.
-- **Escape sequences**: the sequences \\\*, \\\`, \\\[, \\\! and \\\\ are recognized, and yield literal characters.
+- **Escape sequences**: the sequences \\\*, \\\`, \\\[, \\\], \\\! and \\\\ are recognized, and yield literal characters.
 - **Links**: `[Link text](Link URL)`. Equivalent to HTML `<a href="...">...</a>`.
 - **Images**: `![Image ALT text](Image file name)`. Equivalent to HTML `<img src="..." alt="..."/>`.
 
