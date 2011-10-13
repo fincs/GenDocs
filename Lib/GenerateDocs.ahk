@@ -8,7 +8,7 @@
 GenerateDocs(file, docs)
 {
 	SplitPath, file,, filedir,, name
-	docudir := filedir "\" name
+	docudir := filedir "\" name "-doc"
 	IfNotExist, %docudir%\
 		FileCreateDir, %docudir%
 	
