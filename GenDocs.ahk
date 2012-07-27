@@ -13,7 +13,7 @@ SetWorkingDir, %A_ScriptDir%
 FileEncoding, UTF-8
 
 DEBUG = 1
-VER = 3.0-alpha001
+VER = 3.0-alpha002
 
 if !DEBUG
 {
