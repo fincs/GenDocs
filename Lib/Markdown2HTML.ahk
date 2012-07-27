@@ -26,18 +26,20 @@ Markdown2HTML(ByRef text, simplify=0)
 
 Markdown2HTML_(ByRef text)
 {
-	blankLine := 1, inCode := 0, inList := 0
+	blankLine := 1, inCode := 0, inUList := 0, inOList := 0
 	Loop, Parse, text, `n, `r
 	{
+		isList := false
 		t := LTrim(A_LoopField)
 		beg := SubStr(t, 1, 2)
 		if t =
 		{
 			blankLine ++
 			if blankLine = 1
-				out .= !inCode ? !inList ? "</p>`n" : "</ul>`n" : "</pre>`n"
+				out .= !inCode ? !inUList ? !inOList ? "</p>`n" : "</ol>`n" : "</ul>`n" : "</pre>`n"
 			inCode := 0
-			inList := 0
+			inUList := 0
+			inOList := 0
 			continue
 		}else
 		{
@@ -50,8 +52,11 @@ Markdown2HTML_(ByRef text)
 					continue
 				}
 				inCode := (beg = "> ")
-				inList := (beg = "* ")
-				out .= !inCode ? !inList ? "<p>`n" : "<ul>`n" : "<pre>`n"
+				inUList := (beg = "* ")
+				inOList := (t ~= "^([1-9]+|[a-z]+)\.\s+")
+				if inOList
+					listTag := t ~= "\d" ? "<ol>`n" : "<ol type=""a"">`n", isList := true
+				out .= !inCode ? !inUList ? !inOList ? "<p>`n" : listTag : "<ul>`n" : "<pre>`n"
 			}
 			blankLine := 0
 		}
@@ -65,10 +70,10 @@ Markdown2HTML_(ByRef text)
 			}else
 			{
 				out .= "</pre>`n"
-				SetStatus(out, beg, inCode, inList)
+				SetStatus(out, t, inCode, inUList, inOList)
 				goto _reprocess
 			}
-		}else if inList
+		}else if inUList
 		{
 			if (beg = "* ")
 			{
@@ -77,12 +82,24 @@ Markdown2HTML_(ByRef text)
 			}else
 			{
 				out .= "</ul>`n"
-				SetStatus(out, beg, inCode, inList)
+				SetStatus(out, t, inCode, inUList, inOList)
+				goto _reprocess
+			}
+		}else if inOList
+		{
+			if RegExMatch(t, "O)^([1-9]+|[a-z]+)\.\s+", mObj)
+			{
+				StringTrimLeft, t, t, % mObj.Len
+				t := "<li>" _MD(t) "</li>"
+			}else
+			{
+				out .= "</ol>`n"
+				SetStatus(out, t, inCode, inUList, inOList)
 				goto _reprocess
 			}
 		}else
 		{
-			if (beg != "> ") && (beg != "* ")
+			if (beg != "> ") && (beg != "* ") && !isList
 			{
 				t := _MD(t)
 				if SubStr(t, -1) = "  "
@@ -93,7 +110,7 @@ Markdown2HTML_(ByRef text)
 			}else
 			{
 				out .= "</p>`n"
-				SetStatus(out, beg, inCode, inList)
+				SetStatus(out, t, inCode, inUList, inOList)
 				goto _reprocess
 			}
 		}
@@ -101,7 +118,7 @@ Markdown2HTML_(ByRef text)
 		out .= t "`n"
 	}
 	if !blankLine
-		out .= !inCode ? !inList ? "</p>`n" : "</ul>`n" : "</pre>`n"
+		out .= !inCode ? !inUList ? !inOList ? "</p>`n" : "</ol>`n" : "</ul>`n" : "</pre>`n"
 	StringTrimRight, out, out, 1
 	StringReplace, out, out, <p>`n, <p>, All
 	StringReplace, out, out, `n</p>, </p>, All
@@ -122,11 +139,13 @@ Markdown2HTML_(ByRef text)
 	return out
 }
 
-SetStatus(ByRef out, beg, ByRef inCode, ByRef inList)
+SetStatus(ByRef out, t, ByRef inCode, ByRef inUList, ByRef inOList)
 {
+	beg := SubStr(t, 1, 2)
 	inCode := beg = "> "
-	inList := beg = "* "
-	out .= !inCode ? !inList ? "<p>`n" : "<ul>`n" : "<pre>`n"
+	inUList := beg = "* "
+	inOList := t ~= "^([1-9]+|[a-z]+)\.\s+"
+	out .= !inCode ? !inUList ? !inOList ? "<p>`n" : "<ol>`n" : "<ul>`n" : "<pre>`n"
 }
 
 _MD(ByRef v)

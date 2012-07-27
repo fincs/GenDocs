@@ -29,6 +29,16 @@ Oh, and I like pie: `CPie.Eat()`. Use `<pre class="NoIndent">` and `&amp;` for d
 * Spaghetti
 This continues here
 
+## List demo
+
+1. First item
+2. Second item
+12983698346. Third item
+
+a. First item!
+z. Second item!
+q. Third item!
+
 Some math: `2\**3 + 5\*4`
 
 ### For more information
