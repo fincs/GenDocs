@@ -48,7 +48,7 @@ Markdown2HTML_(ByRef text)
 				if RegExMatch(t, "^(#{1,3})\s+(.+)$", o)
 				{
 					h := StrLen(o1)
-					out .= "<h" h ">" _HTML(o2) "</h" h ">`n"
+					out .= "<h" h " id=""" _ElemID(o2) """>" _HTML(o2) "</h" h ">`n"
 					continue
 				}
 				inCode := (beg = "> ")
@@ -172,6 +172,21 @@ _HTML(ByRef v)
 	StringReplace, t, t, ", &quot;, All
 	StringReplace, t, t, <, &lt;, All
 	StringReplace, t, t, >, &gt;, All
+	return t
+}
+
+_ElemID(ByRef v)
+{
+	t := Trim(_HTML(v))
+	StringReplace, t, t, ',, All
+	StringReplace, t, t, ",, All
+	StringReplace, t, t, (,, All
+	StringReplace, t, t, ),, All
+	StringReplace, t, t, [,, All
+	StringReplace, t, t, ],, All
+	StringReplace, t, t, ?,, All
+	StringReplace, t, t, %A_Space%, -, All
+	StringLower, t, t
 	return t
 }
 
