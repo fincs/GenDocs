@@ -55,7 +55,7 @@ Markdown2HTML_(ByRef text)
 				inUList := (beg = "* ")
 				inOList := (t ~= "^([1-9]+|[a-z]+)\.\s+")
 				if inOList
-					listTag := t ~= "\d" ? "<ol>`n" : "<ol type=""a"">`n", isList := true
+					listTag := t ~= "\d" ? "<ol>`n" : "<ol style=""list-style-type: lower-alpha"">`n", isList := true
 				out .= !inCode ? !inUList ? !inOList ? "<p>`n" : listTag : "<ul>`n" : "<pre>`n"
 			}
 			blankLine := 0
