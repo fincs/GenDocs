@@ -58,7 +58,7 @@ return
 GuiClose:
 ExitApp
 
-MainDropFiles:
+GuiDropFiles:
 selected =
 Loop, Parse, A_GuiEvent, `n
 {
