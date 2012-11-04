@@ -3,17 +3,19 @@
 ; Platform:  Windows XP/Vista/7
 ; Author:    fincs
 ;
-; GenDocs v3.0-alpha001
+; GenDocs v3.0-alpha003
 ;
 
 #NoEnv
+#NoTrayIcon
+#SingleInstance Ignore
 SendMode Input
 SetWorkingDir, %A_ScriptDir%
 
 FileEncoding, UTF-8
 
 DEBUG = 1
-VER = 3.0-alpha002
+VER = 3.0-alpha003
 _DefaultFName =
 
 #include *i %A_ScriptDir%\..\$gendocs_scite

@@ -1,4 +1,4 @@
-GenDocs v3.0-alpha002
+GenDocs v3.0-alpha003
 =====================
 
 Introduction
