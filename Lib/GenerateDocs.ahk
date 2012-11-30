@@ -147,12 +147,18 @@ Parse_Common(item, prefix, ByRef type, ByRef syntax, ByRef name, ByRef isConstr,
 					throw Exception("You must specify [get], [set] or [get/set]!")
 			}else isGet := 0
 		}else isSet := 0
+		pos := InStr(name, "[")
+		if pos
+		{
+			extra := SubStr(name, pos)
+			name := SubStr(name, 1, pos - 1)
+		}
 		name := Trim(name)
 		syntax := ""
 		if isGet
-			syntax .= "OutputVar := " name "`n"
+			syntax .= "OutputVar := " name extra "`n"
 		if isSet
-			syntax .= name " := Value`n"
+			syntax .= name extra " := Value`n"
 		StringTrimRight, syntax, syntax, 1
 		StringReplace, syntax, syntax, `r, <br/>
 	}
