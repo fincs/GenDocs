@@ -6,25 +6,40 @@ RetrieveDocs(file)
 {
 	Util_Status("Parsing AutoHotkey script...")
 	o := { contents: [] }
+	SplitPath, file,, fileDir
+	tmpWD := A_WorkingDir
+	SetWorkingDir, %fileDir%
+	files := [file]
 	try
 	{
-		file := FileOpen(file, "r")
-		
-		while !file.AtEOF
+		while files.MaxIndex()
 		{
-			line := RTrim(file.ReadLine(), " `t`r`n")
-			tline := LTrim(line)
-			if StrStartsWith(tline, "/*!")
+			file := FileOpen(q :=files.Remove(1), "r")
+			
+			while !file.AtEOF
 			{
-				indent := SubStr(line, 1, InStr(line, "/*!")-1)
-				ReadChunk(file, o, indent)
+				line := RTrim(file.ReadLine(), " `t`r`n")
+				tline := LTrim(line)
+				if StrStartsWith(tline, "/*!")
+				{
+					indent := SubStr(line, 1, InStr(line, "/*!")-1)
+					ReadChunk(file, o, indent)
+				}
+				if RegExMatch(tline, "i)^;!GenDocs-Import\s+(.+)$", tmp)
+				{
+					IfNotExist, %tmp1%
+						throw Exception("File does not exist!", 1, tmp1)
+					files.Insert(tmp1)
+				}
 			}
 		}
 		PackClasses(o.contents)
+		SetWorkingDir, %tmpWD%
 		return o
 	}catch e
 	{
 		Util_Status("An error happened (" e.what ")! " e.message " | " e.extra, 1)
+		SetWorkingDir, %tmpWD%
 		Exit
 	}
 }
