@@ -270,6 +270,8 @@ Generate_Class(item, prefix="")
 
 	<h1>%name% Class</h1>
 	)
+	if item.inherits
+		filetext .= "`n<p>(Inherits from <a href=""" item.inherits ".html"">" item.inherits "</a>)</p>"
 	filetext .= "`n" Markdown2HTML(item.description)
 	
 	if !isShort
@@ -376,6 +378,8 @@ GenerateShort_Class(ByRef filetext, item, prefix)
 {
 	name := item.name
 	filetext .= "`n`n<div class=""methodShort"" id=""" name """><h2>" name " Class</h2>"
+	if item.inherits
+		filetext .= "`n<p>(Inherits from <a href=""" item.inherits ".html"">" item.inherits "</a>)</p>"
 	filetext .= "`n" Markdown2HTML(item.description)
 	for each,it in item.contents
 	{
