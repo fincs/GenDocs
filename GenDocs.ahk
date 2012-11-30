@@ -3,7 +3,7 @@
 ; Platform:  Windows XP/Vista/7
 ; Author:    fincs
 ;
-; GenDocs v3.0-alpha003
+; GenDocs v3.0-alpha004
 ;
 
 #NoEnv
@@ -15,7 +15,7 @@ SetWorkingDir, %A_ScriptDir%
 FileEncoding, UTF-8
 
 DEBUG = 1
-VER = 3.0-alpha003
+VER = 3.0-alpha004
 _DefaultFName =
 
 #include *i %A_ScriptDir%\..\$gendocs_scite
