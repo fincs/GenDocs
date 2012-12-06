@@ -234,7 +234,7 @@ _MD_Callout(m, cId, foundPos, haystack)
 	if cId = 4
 	{
 		global imglist
-		imglist._Insert(SubStr(haystack, mPos2, mLen2))
+		imglist.Insert(SubStr(haystack, mPos2, mLen2))
 	}
 	
 	return 0

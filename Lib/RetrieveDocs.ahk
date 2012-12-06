@@ -90,7 +90,7 @@ ReadChunk(file, lib, beg_indent)
 	
 	ent.type := type
 	if type != Library
-		lib.contents._Insert(ent)
+		lib.contents.Insert(ent)
 }
 
 ReadValue(ByRef value, file, indent)
@@ -112,12 +112,12 @@ ReadValue(ByRef value, file, indent)
 PackClasses(cont)
 {
 	i := 1
-	while i <= cont._MaxIndex()
+	while i <= cont.MaxIndex()
 	{
 		if cont[i].type != "Class"
 			goto _PC_cont
 		last := "", depth := 1, j := i
-		while j <= cont._MaxIndex()
+		while j <= cont.MaxIndex()
 		{
 			j ++
 			if cont[j].type = "EndClass"
@@ -135,11 +135,11 @@ PackClasses(cont)
 		if count := last-i
 		{
 			Loop, %count%
-				arr._Insert(cont[i+A_Index-1])
+				arr.Insert(cont[i+A_Index-1])
 			PackClasses(arr)
-			cont._Remove(i, last-1)
+			cont.Remove(i, last-1)
 		}
-		cont._Remove(i)
+		cont.Remove(i)
 		continue
 		_PC_cont:
 		i ++
