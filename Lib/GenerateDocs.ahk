@@ -153,7 +153,7 @@ Parse_Common(item, prefix, ByRef type, ByRef syntax, ByRef name, ByRef isConstr,
 			extra := SubStr(name, pos)
 			name := SubStr(name, 1, pos - 1)
 		}
-		name := Trim(name)
+		name := Trim(name), extra := Trim(extra)
 		syntax := ""
 		if isGet
 			syntax .= "OutputVar := " name extra "`n"
