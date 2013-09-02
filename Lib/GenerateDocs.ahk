@@ -14,7 +14,6 @@ GenerateDocs(file, docs)
 	
 	libname := docs.name
 	libdesc := docs.description
-	libextra := 
 	if docs.version
 		libextra .= " - Version " _HTML(docs.version)
 	if docs.author
@@ -113,7 +112,7 @@ Generate_Constructor(item, prefix)
 	return Generate_Common(item, prefix)
 }
 
-Parse_Common(item, prefix, ByRef type, ByRef syntax, ByRef name, ByRef isConstr, ByRef HasParamTableAndRetVal, ByRef isGet, ByRef isSet)
+Parse_Common(item, prefix, ByRef type, ByRef syntax, ByRef name, ByRef isConstr, ByRef isGet, ByRef isSet)
 {
 	if type = Method
 		type = Function
@@ -135,7 +134,6 @@ Parse_Common(item, prefix, ByRef type, ByRef syntax, ByRef name, ByRef isConstr,
 			syntax := "obj := new " RTrim(prefix,".") syntax 
 			name := prefix "__New"
 		}
-		HasParamTableAndRetVal := true
 	}else if type = Property
 	{
 		name := prefix item.name
@@ -170,7 +168,7 @@ Parse_Common(item, prefix, ByRef type, ByRef syntax, ByRef name, ByRef isConstr,
 Generate_Common(item, prefix="")
 {
 	type := item.type
-	Parse_Common(item, prefix, type, syntax, name, isConstr, HasParamTableAndRetVal, isGet, isSet)
+	Parse_Common(item, prefix, type, syntax, name, isConstr, isGet, isSet)
 	
 	prettyname := type = "Function" ? name "()" : name
 	
@@ -191,27 +189,25 @@ Generate_Common(item, prefix="")
 	if item.description
 		filetext .= "`n" Markdown2HTML(item.description)
 	filetext .= "`n`n<pre class=""Syntax"">" _HTML(syntax) "</pre>"
-	if HasParamTableAndRetVal
+	if params := item.parameters
 	{
-		if params := item.parameters
+		filetext .= "`n<h3>Parameters</h4>`n<table class=""info"">"
+		params := RegExReplace(params, "`n\s+", "`r")
+		Loop, Parse, params, `n
 		{
-			filetext .= "`n<h3>Parameters</h4>`n<table class=""info"">"
-			params := RegExReplace(params, "`n\s+", "`r")
-			Loop, Parse, params, `n
-			{
-				if not pos := InStr(A_LoopField, "-")
-					throw Exception("Invalid parameter syntax!")
-				pname := RTrim(SubStr(A_LoopField, 1, pos-1))
-				pval := LTrim(SubStr(A_LoopField, pos+1))
-				StringReplace, pval, pval, `r, `n, All
-				filetext .= "`n<tr>`n  <td width=""15%"">" pname "</td>`n  <td width=""85%"">" Markdown2HTML(pval,1) "</td>`n</tr>"
-			}
-			filetext .= "`n</table>"
+			if not pos := InStr(A_LoopField, "-")
+				throw Exception("Invalid parameter syntax!")
+			pname := RTrim(SubStr(A_LoopField, 1, pos-1))
+			pval := LTrim(SubStr(A_LoopField, pos+1))
+			StringReplace, pval, pval, `r, `n, All
+			filetext .= "`n<tr>`n  <td width=""15%"">" pname "</td>`n  <td width=""85%"">" Markdown2HTML(pval,1) "</td>`n</tr>"
 		}
-		if returns := item.returns
-			filetext .= "`n<h3>Returns</h3>`n" Markdown2HTML(returns)
-	}else if type = Property
-		filetext .= "`n<h3>Value</h3>`n" Markdown2HTML(item.value)
+		filetext .= "`n</table>"
+	}
+	if returns := item.returns
+		filetext .= "`n<h3>Returns</h3>`n" Markdown2HTML(returns)
+	if value := item.value
+		filetext .= "`n<h3>Value</h3>`n" Markdown2HTML(value)
 	if throws := item.throws
 		filetext .= "`n<h3>Throws</h3>`n" Markdown2HTML(throws)
 	if remarks := item.remarks
@@ -343,14 +339,14 @@ GenerateShort_Constructor(ByRef filetext, item, prefix)
 GenerateShort_Common(ByRef filetext, item, prefix)
 {
 	type := item.type
-	Parse_Common(item, prefix, type, syntax, name, isConstr, HasParamTableAndRetVal, isGet, isSet)
+	Parse_Common(item, prefix, type, syntax, name, isConstr, isGet, isSet)
 	name2 := SubStr(name, StrLen(prefix)+1)
 	prettyname := type = "Function" ? name2 "()" : name2
 	filetext .= "`n`n<div class=""methodShort"" id=""" name2 """><h2>" prettyname "</h2>"
 	if item.description
 		filetext .= "`n" Markdown2HTML(item.description)
 	filetext .= "`n`n<pre class=""Syntax"">" _HTML(syntax) "</pre>"
-	if item.value || item.parameters || item.returns || item.throws
+	if item.value || item.parameters || items.value || item.returns || item.throws
 	{
 		filetext .= "`n<table class=""info"">"
 		if q := item.value
