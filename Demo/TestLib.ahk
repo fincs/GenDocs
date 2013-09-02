@@ -1,11 +1,12 @@
 /*!
-	Library: Test library, version 1.0
+	Library: Test library
 		This library does something
 		
 		or maybe not!  
 		In-paragraph line breaks work
 	Author: fincs
 	License: WTFPL
+	Version: 1.0
 */
 
 /*!
