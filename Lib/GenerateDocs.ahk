@@ -14,8 +14,11 @@ GenerateDocs(file, docs)
 	
 	libname := docs.name
 	libdesc := docs.description
+	libextra := 
+	if docs.version
+		libextra .= " - Version " _HTML(docs.version)
 	if docs.author
-		libextra := " - by " _HTML(docs.author)
+		libextra .= " - by " _HTML(docs.author)
 	if docs.license
 		libextra .= " - released under the " _HTML(docs.license)
 	
