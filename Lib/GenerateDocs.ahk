@@ -29,6 +29,7 @@ GenerateDocs(file, docs)
 	<head>
 	<title>%libname%</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<link href="default.css" rel="stylesheet" type="text/css">
 	</head>
 	<body>
@@ -180,6 +181,7 @@ Generate_Common(item, prefix="")
 	<head>
 	<title>%prettyname%</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<link href="default.css" rel="stylesheet" type="text/css">
 	</head>
 	<body>
@@ -241,6 +243,7 @@ Generate_Page(item, prefix="")
 	<head>
 	<title>%name%</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<link href="default.css" rel="stylesheet" type="text/css">
 	</head>
 	<body>
@@ -269,6 +272,7 @@ Generate_Class(item, prefix="")
 	<head>
 	<title>%name% Class</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<link href="default.css" rel="stylesheet" type="text/css">
 	</head>
 	<body>
